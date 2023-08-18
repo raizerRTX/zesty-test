@@ -1,95 +1,47 @@
 import Image from 'next/image'
-import styles from './styles/page.module.css'
 
-export default function Home() {
+async function getData() {
+  const res = await fetch('https://www.zesty.io/-/gql/platform_section.json');
+  return res.json()
+}
+
+export default async function Home() {
+  const data = await getData();
+   
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+    <main className="main">
+      <div className="container-fluid content_parent_panel">
+          <div className="col-12 w-100 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
+            <div className="card">
+              <div className="row row-bordered g-0">
+                <h3 className="card-header m-0 me-2 page_title"><b>Contents: </b></h3>
+              </div>
+              <div className="container-fluid content_panel overflow-auto">
+              {
+                (() => {
+                  let container = [];
+                  data.forEach((val, index) => {
+                    container.push(
+                      <>
+                        <div className="details">
+                          <input type="checkbox" id={'collapse_' + index} />
+                          <h3 className="details_title"><label htmlFor={'collapse_' + index}>{val.title}</label></h3>
+                          <div className="summary overflow-auto">
+                            <div className="card card-body m-1 img_content overflow-auto" dangerouslySetInnerHTML = {{__html:val.media_content}} />
+                            <div className="card card-body m-1 overflow-auto" dangerouslySetInnerHTML = {{__html:val.text_content}} />
+                          </div>
+                        </div>
+                      </>
+                    )
+                  });
+                  return container;
+                })()
+              }   
+              </div>
+            </div>
+          </div>
       </div>
     </main>
   )
 }
+
