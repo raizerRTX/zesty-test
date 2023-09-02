@@ -169,8 +169,15 @@ input:checked ~ .details_title ~ div.summary{
   max-height:300px;
 }
 
-a{
+a {
   color:steelblue;
+}
+
+.content_parent_panel {
+  background-color: transparent;
+  border-radius: 12px;
+  border: 2px solid rgb(139, 7, 139);
+
 }
 
 .content_panel {
@@ -202,3 +209,7 @@ footer {
     align-items: center;
     justify-content: center;
 } 
+
+.text_content {
+  color: black;
+}
